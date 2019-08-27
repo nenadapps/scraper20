@@ -68,7 +68,7 @@ def get_details(url):
     except:
         stamp['category'] = None   
         
-    stamp['currency'] = "USD"
+    stamp['currency'] = "NZD"
 
     # image_urls should be a list
     images = []                    
