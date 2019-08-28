@@ -28,8 +28,8 @@ def get_details(url):
         return stamp
 
     try:
-        price_temp = html.select('.PriceUser p')[1].get_text().strip()
-        price_temp = price_temp.replace('Within New ZealandNZ$', '').replace(',', '').strip()
+        price_temp = html.select('.PriceUser p')[2].get_text().strip()
+        price_temp = price_temp.replace('Outside New ZealandNZ$', '').replace(',', '').strip()
         price_parts = price_temp.split('(')
         price = price_parts[0].strip()
         stamp['price'] = price
@@ -117,7 +117,8 @@ def get_page_items(url):
     try:
         for item in html.select('td a.head2'):
             item_link = 'https://www.classicstamps.co.nz' + item.get('href').replace('&amp;', '&').strip()
-            items.append(item_link)
+            if item_link not in items:
+                items.append(item_link)
     except:
         pass
 
