@@ -146,7 +146,7 @@ def get_categories(category_url):
         return items
  
     try:
-        for item in html.select('td a'):
+        for item in html.select('table.cat td a'):
             item_link = 'https://www.classicstamps.co.nz/' + item.get('href')
             if 'redirect1.asp' in item.get('href') and item_link not in items:
                 items.append(item_link)
