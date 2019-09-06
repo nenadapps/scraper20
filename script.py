@@ -186,6 +186,7 @@ selection = input('Choose country: ')
             
 category_url = item_dict[selection]
 categories = get_categories(category_url)
+print(categories)
 for category in categories:
     page_url = category
     while(page_url):
