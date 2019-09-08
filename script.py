@@ -104,7 +104,7 @@ def get_details(url):
            
     return stamp
 
-def get_page_items(url):
+def get_page_items_urls(url):
 
     items = []
     next_url = ''
@@ -136,7 +136,7 @@ def get_page_items(url):
     
     return items, next_url
 
-def get_categories(category_url):
+def get_categories(category_url, category_slug):
     
     items = []
 
@@ -146,9 +146,9 @@ def get_categories(category_url):
         return items
  
     try:
-        for item in html.select('table.cat td a'):
+        for item in html.select('.cat td a'):
             item_link = 'https://www.classicstamps.co.nz/' + item.get('href')
-            if 'redirect1.asp' in item.get('href') and item_link not in items:
+            if category_slug in item.get('href') and item_link not in items:
                 items.append(item_link)
     except: 
         pass
@@ -156,6 +156,12 @@ def get_categories(category_url):
     shuffle(items)
     
     return items
+
+def get_page_items(page_url): 
+    while(page_url):
+        page_items, page_url = get_page_items_urls(page_url)
+        for page_item in page_items:
+            stamp = get_details(page_item)
 
 item_dict = {
 'New Zealand Definitives':'https://www.classicstamps.co.nz/rhome1d.asp?Header=NewZealandDefinitives&x=',
@@ -185,11 +191,11 @@ for key in item_dict:
 selection = input('Choose country: ')
             
 category_url = item_dict[selection]
-categories = get_categories(category_url)
-print(categories)
+categories = get_categories(category_url, 'redirect1.asp')
 for category in categories:
-    page_url = category
-    while(page_url):
-        page_items, page_url = get_page_items(page_url)
-        for page_item in page_items:
-            stamp = get_details(page_item)
+    categories2 = get_categories(category, 'redirect2.asp')
+    if categories2:
+       for category2 in categories2:
+           get_page_items(category2) 
+    else:
+       get_page_items(category) 
